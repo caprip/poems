@@ -30,8 +30,8 @@ def get_details(res_text):
 
 def get_poem_with_pid(poem_uuid):
     URL_baiduhanyu = 'https://hanyu.baidu.com/shici/detail'
-    preload = {'pid': poem_uuid}
-    res_poem = requests.get(URL_baiduhanyu, params=preload)
+    payload = {'pid': poem_uuid}
+    res_poem = requests.get(URL_baiduhanyu, params=payload)
     res_poem.encoding = 'utf-8'
     details = get_details(res_poem.text)
     return (poem_uuid,) + details
@@ -41,8 +41,8 @@ def get_url_from_baidu(keyword):
     URL_baidu = 'http://www.baidu.com/s'
     TAG_start = '"url":"http'
     TAG_end = '}'
-    preload = {'wd': keyword}
-    res_baidu = requests.get(URL_baidu, params=preload)
+    payload = {'wd': keyword}
+    res_baidu = requests.get(URL_baidu, params=payload)
     t = res_baidu.text
     return t[t.find(TAG_start) + 7:t.find(TAG_end, t.find(TAG_start)) - 1]
 
@@ -86,7 +86,13 @@ with open('poemlist1.txt') as fp:
         poem = get_poem_with_key(eachline)
         save_poem(poem)
 '''
-conn = sqlite3.connect(DATABASE_FILE)
-allpoems = conn.execute('SELECT * FROM poems')
-print(allpoems.fetchall())
-conn.close()
+
+
+def list_all_poems():
+    conn = sqlite3.connect(DATABASE_FILE)
+    allpoems = conn.execute('SELECT * FROM poems')
+    print(allpoems.fetchall())
+    conn.close()
+
+
+list_all_poems()

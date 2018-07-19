@@ -39,12 +39,15 @@ def get_poem_with_pid(poem_uuid):
 
 def get_url_from_baidu(keyword):
     URL_baidu = 'http://www.baidu.com/s'
-    TAG_start = '"url":"http'
-    TAG_end = '}'
     payload = {'wd': keyword}
     res_baidu = requests.get(URL_baidu, params=payload)
+    soup=BeautifulSoup(res_baidu.text,'html5lib')
+    return soup(class_='result c-container ')[0].h3.a['href']
+    '''
+    TAG_start = '"url":"http'
+    TAG_end = '}'
     t = res_baidu.text
-    return t[t.find(TAG_start) + 7:t.find(TAG_end, t.find(TAG_start)) - 1]
+    return t[t.find(TAG_start) + 7:t.find(TAG_end, t.find(TAG_start)) - 1]'''
 
 
 def get_poem_from_url(url_poem):
@@ -78,7 +81,7 @@ def save_poem(poem):
 # get_poem_with_pid('ba9e4875904f4e8887d691f6a753d5f4')
 # get_poem_with_pid('35146e25078b4a3585179d31caa2bc29')
 # print(get_poem_with_key('a20ccf16278df7ec4df2f965624423b1'))
-
+print(get_poem_with_key('山居秋暝 百度汉语'))
 
 '''
 with open('poemlist1.txt') as fp:
@@ -88,11 +91,18 @@ with open('poemlist1.txt') as fp:
 '''
 
 
-def list_all_poems():
+def list_all_poems(columns='*'):
     conn = sqlite3.connect(DATABASE_FILE)
-    allpoems = conn.execute('SELECT * FROM poems')
-    print(allpoems.fetchall())
+    result = conn.execute('SELECT {} FROM poems'.format(columns)).fetchall()
     conn.close()
+    return result
 
-
-list_all_poems()
+'''
+sql_result = list_all_poems()
+all_uuids = []
+all_title_author = []
+for each in sql_result:
+    all_uuids.append(each[0])
+    all_title_author.append(each[1] + ' ' + each[2])
+print(all_uuids)
+print(all_title_author)'''

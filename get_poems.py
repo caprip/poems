@@ -41,7 +41,7 @@ def get_url_from_baidu(keyword):
     URL_baidu = 'http://www.baidu.com/s'
     payload = {'wd': keyword}
     res_baidu = requests.get(URL_baidu, params=payload)
-    soup=BeautifulSoup(res_baidu.text,'html5lib')
+    soup = BeautifulSoup(res_baidu.text, 'html5lib')
     return soup(class_='result c-container ')[0].h3.a['href']
     '''
     TAG_start = '"url":"http'
@@ -78,10 +78,11 @@ def save_poem(poem):
     conn.commit()
     conn.close()
 
+
 # get_poem_with_pid('ba9e4875904f4e8887d691f6a753d5f4')
 # get_poem_with_pid('35146e25078b4a3585179d31caa2bc29')
 # print(get_poem_with_key('a20ccf16278df7ec4df2f965624423b1'))
-print(get_poem_with_key('山居秋暝 百度汉语'))
+# print(get_poem_with_key('山居秋暝 百度汉语'))
 
 '''
 with open('poemlist1.txt') as fp:
@@ -96,6 +97,7 @@ def list_all_poems(columns='*'):
     result = conn.execute('SELECT {} FROM poems'.format(columns)).fetchall()
     conn.close()
     return result
+
 
 '''
 sql_result = list_all_poems()

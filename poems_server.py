@@ -60,11 +60,11 @@ def create_html_poem(poem):
 
 
 def create_html_recite(poem):
-    html = '<title>{}-{}</title>'.format(poem[1], poem[2])
-    html += '<body align="center" style="line-height:66%" onclick="echoauthor()" ondblclick="echopoem()">'
+    html = '<title>背诵-{}</title>'.format(poem[1])
+    html += '<body align="center" style="line-height:66%" onclick="echoauthor()">'
     html += '<audio id="audio" src="{}" controls="controls" style="visibility:hidden"></audio>'.format(
         URL_poem_mp3.format(poem[0]))
-    html += '<h3 id="title">{}</h3>'.format(poem[1])
+    html += '<h3 id="title" onclick="echopoem()">{}</h3>'.format(poem[1])
     html += '<h5 id="author" style="visibility:hidden">{} {}</h5>'.format(
         poem[3], poem[2])
     html += '<div id="content" style="visibility:hidden">'

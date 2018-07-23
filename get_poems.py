@@ -5,6 +5,7 @@
 # @Link    : http://zhangyunping.cn
 # @Version : $Id$
 
+import datetime
 import json
 import sqlite3
 import uuid
@@ -99,12 +100,35 @@ def list_all_poems(columns='*'):
     return result
 
 
+def create_dates(yy, mm, dd, days,):
+    dates = []
+    for i in range(days):
+        dates.append((datetime.date(yy, mm, dd) +
+                      datetime.timedelta(i)).strftime('%Y%m%d'))
+    return dates
+
+
+def set_checkin(filepath, yy, mm, dd, days):
+    with open(filepath) as fp:
+        poem_uuids = json.load(fp, encoding='utf-8')
+    table = []
+    for i in range(days):
+        table.append(((datetime.date(yy, mm, dd) +
+                       datetime.timedelta(i)).strftime('%Y%m%d'), poem_uuids[i]))
+    conn = sqlite3.connect(DATABASE_FILE)
+    result = conn.executemany('INSERT INTO checkin VALUES (?,?)', table)
+    conn.commit()
+    conn.close()
+    return result
+
+
+#print(set_checkin('checkin1.json', 2018, 7, 17, 30))
+
 '''
 sql_result = list_all_poems()
 all_uuids = []
-all_title_author = []
 for each in sql_result:
     all_uuids.append(each[0])
-    all_title_author.append(each[1] + ' ' + each[2])
-print(all_uuids)
-print(all_title_author)'''
+# with open('checkin1.json', 'w') as fp:
+    # json.dump(all_uuids, fp, indent=4)
+print(all_uuids)'''

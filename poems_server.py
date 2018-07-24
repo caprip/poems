@@ -8,6 +8,8 @@
 import time
 import json
 import random
+from gevent import monkey
+monkey.patch_all()
 from bottle import route, run
 import sqlite3
 
@@ -116,6 +118,6 @@ def http_recite():
     return create_html_recite(poem)
 
 
-run(host='0.0.0.0', port=80)
+run(host='0.0.0.0', port=80, server='gevent')
 
 #print(get_poem_from_db('贾岛', '题李凝幽居'))

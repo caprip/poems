@@ -103,7 +103,9 @@ def http_random():
 
 @route('/checkin')
 @route('/checkin/<checkinday>')
-def http_checkin(checkinday=datetime.date.today().strftime('%Y%m%d')):
+def http_checkin(checkinday=''):
+    if checkinday == '':
+        checkinday = datetime.date.today().strftime('%Y%m%d')
     checkin_uuid = get_checkin_uuid(checkinday)
     if len(checkin_uuid) == 1:
         poem = get_poem_from_db(uuid=checkin_uuid[0][0])

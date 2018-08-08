@@ -106,6 +106,9 @@ def http_random():
 def http_checkin(checkinday=''):
     if checkinday == '':
         checkinday = datetime.date.today().strftime('%Y%m%d')
+    elif checkinday.lower() == 'tomorrow':
+        checkinday = (datetime.date.today() +
+                      datetime.timedelta(1)).strftime('%Y%m%d')
     checkin_uuid = get_checkin_uuid(checkinday)
     if len(checkin_uuid) == 1:
         poem = get_poem_from_db(uuid=checkin_uuid[0][0])
@@ -121,5 +124,3 @@ def http_recite():
 
 
 run(host='0.0.0.0', port=80, server='gevent')
-
-#print(get_poem_from_db('贾岛', '题李凝幽居'))

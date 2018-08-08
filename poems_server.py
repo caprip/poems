@@ -101,7 +101,8 @@ def http_random():
     return create_html_poem(poem)
 
 
-@route('/checkin')
+#@route('/checkin')
+@route('/checkin/')
 @route('/checkin/<checkinday>')
 def http_checkin(checkinday=''):
     if checkinday == '' or checkinday.lower() == 'today':

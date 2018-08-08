@@ -104,10 +104,13 @@ def http_random():
 @route('/checkin')
 @route('/checkin/<checkinday>')
 def http_checkin(checkinday=''):
-    if checkinday == '':
+    if checkinday == '' or checkinday.lower() == 'today':
         checkinday = datetime.date.today().strftime('%Y%m%d')
     elif checkinday.lower() == 'tomorrow':
         checkinday = (datetime.date.today() +
+                      datetime.timedelta(1)).strftime('%Y%m%d')
+    elif checkinday.lower() == 'yesterday':
+        checkinday = (datetime.date.today() -
                       datetime.timedelta(1)).strftime('%Y%m%d')
     checkin_uuid = get_checkin_uuid(checkinday)
     if len(checkin_uuid) == 1:

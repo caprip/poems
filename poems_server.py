@@ -96,12 +96,13 @@ def http_poem(author, title):
 
 
 @route('/random')
+@route('/random/')
 def http_random():
     poem = get_random_poem_from_db()
     return create_html_poem(poem)
 
 
-#@route('/checkin')
+@route('/checkin')
 @route('/checkin/')
 @route('/checkin/<checkinday>')
 def http_checkin(checkinday=''):
@@ -122,6 +123,7 @@ def http_checkin(checkinday=''):
 
 
 @route('/recite')
+@route('/recite/')
 def http_recite():
     poem = get_random_poem_from_db()
     return create_html_recite(poem)

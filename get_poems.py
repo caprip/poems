@@ -80,19 +80,6 @@ def save_poem(poem):
     conn.close()
 
 
-# get_poem_with_pid('ba9e4875904f4e8887d691f6a753d5f4')
-# get_poem_with_pid('35146e25078b4a3585179d31caa2bc29')
-# print(get_poem_with_key('a20ccf16278df7ec4df2f965624423b1'))
-# print(get_poem_with_key('山居秋暝 百度汉语'))
-
-'''
-with open('poemlist1.txt') as fp:
-    for eachline in fp.readlines():
-        poem = get_poem_with_key(eachline)
-        save_poem(poem)
-'''
-
-
 def list_all_poems(columns='*'):
     conn = sqlite3.connect(DATABASE_FILE)
     result = conn.execute('SELECT {} FROM poems'.format(columns)).fetchall()
@@ -108,27 +95,72 @@ def create_dates(yy, mm, dd, days,):
     return dates
 
 
-def set_checkin(filepath, yy, mm, dd, days):
+def set_checkin(filepath, datestart=''):
+    if datestart == '':
+        datestart = datetime.date.today().strftime('%Y%m%d')
     with open(filepath) as fp:
-        poem_uuids = json.load(fp, encoding='utf-8')
-    table = []
-    for i in range(days):
-        table.append(((datetime.date(yy, mm, dd) +
-                       datetime.timedelta(i)).strftime('%Y%m%d'), poem_uuids[i]))
+        uuids = json.load(fp, encoding='utf-8')
+    tablecheckin = []
+    '''
+    for i in range(len(uuids)):
+        tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
+                       datetime.timedelta(i)).strftime('%Y%m%d'), uuids[i]))
+    '''
+    for each in uuids:
+        tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
+                              datetime.timedelta(uuids.index(each))).strftime('%Y%m%d'), each))
     conn = sqlite3.connect(DATABASE_FILE)
-    result = conn.executemany('INSERT INTO checkin VALUES (?,?)', table)
+    result = conn.executemany('INSERT INTO checkin VALUES (?,?)', tablecheckin)
     conn.commit()
     conn.close()
     return result
 
 
-#print(set_checkin('checkin1.json', 2018, 7, 17, 30))
+def get_save_and_set(filepath, datestart=''):
+    if datestart == '':
+        datestart = datetime.date.today().strftime('%Y%m%d')
+    with open(filepath) as fp:
+        keys = json.load(fp, encoding='utf-8')
+    tablepoems, tablecheckin = [], []
+    for each in keys:
+        print(each)
+        poem = get_poem_with_key(each)
+        tablepoems.append(poem)
+        tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
+                              datetime.timedelta(keys.index(each))).strftime('%Y%m%d'), poem[0]))
+    print(tablepoems)
+    print(tablecheckin)
+    conn = sqlite3.connect(DATABASE_FILE)
+    result = []
+    result.append(conn.executemany(
+        'INSERT INTO poems VALUES (?,?,?,?,?)', tablepoems))
+    result.append(conn.executemany(
+        'INSERT INTO checkin VALUES (?,?)', tablecheckin))
+    conn.commit()
+    conn.close()
+    return result
 
-'''
-sql_result = list_all_poems()
-all_uuids = []
-for each in sql_result:
-    all_uuids.append(each[0])
-# with open('checkin1.json', 'w') as fp:
-    # json.dump(all_uuids, fp, indent=4)
-print(all_uuids)'''
+
+if __name__ == '__main__':
+    print('This is get_poems.py!\n')
+    print(get_save_and_set('list201811w1.json'))
+    # print(get_poem_with_key('长安秋望'))
+    # print(set_checkin('checkin1.json', 2018, 7, 17, 30))
+    '''
+    sql_result = list_all_poems()
+    all_uuids = []
+    for each in sql_result:
+        all_uuids.append(each[0])
+    # with open('checkin1.json', 'w') as fp:
+        # json.dump(all_uuids, fp, indent=4)
+    print(all_uuids)'''
+    # get_poem_with_pid('ba9e4875904f4e8887d691f6a753d5f4')
+    # get_poem_with_pid('35146e25078b4a3585179d31caa2bc29')
+    # print(get_poem_with_key('a20ccf16278df7ec4df2f965624423b1'))
+    # print(get_poem_with_key('山居秋暝 百度汉语'))
+    '''
+    with open('poemlist1.txt') as fp:
+        for eachline in fp.readlines():
+            poem = get_poem_with_key(eachline)
+            save_poem(poem)
+    '''

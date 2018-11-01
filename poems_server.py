@@ -105,6 +105,7 @@ def http_random():
 @route('/checkin')
 @route('/checkin/')
 @route('/checkin/<checkinday>')
+@route('/checkin/<checkinday>/')
 def http_checkin(checkinday=''):
     if checkinday == '' or checkinday.lower() == 'today':
         checkinday = datetime.date.today().strftime('%Y%m%d')
@@ -114,19 +115,32 @@ def http_checkin(checkinday=''):
     elif checkinday.lower() == 'yesterday':
         checkinday = (datetime.date.today() -
                       datetime.timedelta(1)).strftime('%Y%m%d')
-    checkin_uuid = get_checkin_uuid(checkinday)
-    if len(checkin_uuid) == 1:
-        poem = get_poem_from_db(uuid=checkin_uuid[0][0])
+    checkinuuid = get_checkin_uuid(checkinday)
+    if len(checkinuuid) == 1:
+        poem = get_poem_from_db(uuid=checkinuuid[0][0])
         return create_html_poem(poem)
     else:
-        return '打卡信息有误。'
+        return '打卡日期数据错误。'
 
 
 @route('/recite')
 @route('/recite/')
-def http_recite():
-    poem = get_random_poem_from_db()
-    return create_html_recite(poem)
+@route('/recite/<checkinday>')
+@route('/recite/<checkinday>/')
+def http_recite(checkinday=''):
+    if checkinday == '' or checkinday.lower() == 'today':
+        checkinday = datetime.date.today().strftime('%Y%m%d')
+    elif checkinday.lower() == 'tomorrow':
+        checkinday = (datetime.date.today() +
+                      datetime.timedelta(1)).strftime('%Y%m%d')
+    elif checkinday.lower() == 'yesterday':
+        checkinday = (datetime.date.today() -
+                      datetime.timedelta(1)).strftime('%Y%m%d')
+    checkinuuid = get_checkin_uuid(checkinday)
+    if len(checkinuuid) == 1:
+        return create_html_recite(get_poem_from_db(uuid=checkinuuid[0][0]))
+    else:
+        return create_html_recite(get_random_poem_from_db())
 
 
 run(host='0.0.0.0', port=80, server='gevent')

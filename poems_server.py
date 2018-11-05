@@ -14,6 +14,7 @@ from bottle import route, run
 import sqlite3
 
 DATABASE_FILE = 'poems.db'
+HOST_NAME = 'poems.caprip.win'
 URL_poem_mp3 = 'http://app.dict.baidu.com/static/shici_mp3/{}.mp3'
 
 
@@ -144,3 +145,4 @@ def http_recite(checkinday=''):
 
 
 run(host='0.0.0.0', port=80, server='gevent')
+#run(host=HOST_NAME, port=80, server='gevent')

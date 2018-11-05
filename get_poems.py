@@ -143,7 +143,8 @@ def get_save_and_set(filepath, datestart=''):
 
 if __name__ == '__main__':
     print('This is get_poems.py!\n')
-    print(get_save_and_set('list201811w1.json'))
+    print(get_save_and_set('list201811w2a.json'))
+    print(get_save_and_set('list201811w2b.json', '20181108'))
     # print(get_poem_with_key('长安秋望'))
     # print(set_checkin('checkin1.json', 2018, 7, 17, 30))
     '''

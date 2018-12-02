@@ -116,7 +116,7 @@ def set_checkin(filepath, datestart=''):
     return result
 
 
-def get_save_and_set(filepath, datestart=''):
+def get_save_and_set(filepath, ischeck=False, datestart=''):
     if datestart == '':
         datestart = datetime.date.today().strftime('%Y%m%d')
     with open(filepath) as fp:
@@ -134,8 +134,9 @@ def get_save_and_set(filepath, datestart=''):
     result = []
     result.append(conn.executemany(
         'INSERT INTO poems VALUES (?,?,?,?,?)', tablepoems))
-    result.append(conn.executemany(
-        'INSERT INTO checkin VALUES (?,?)', tablecheckin))
+    if ischeck:
+        result.append(conn.executemany(
+            'INSERT INTO checkin VALUES (?,?)', tablecheckin))
     conn.commit()
     conn.close()
     return result
@@ -143,8 +144,8 @@ def get_save_and_set(filepath, datestart=''):
 
 if __name__ == '__main__':
     print('This is get_poems.py!\n')
-    # print(get_save_and_set('list201811w4.json'))
-    print(get_save_and_set('list201811w5.json', '20181127'))
+    # print(get_save_and_set('list20181202b1.json'))
+    print(get_save_and_set('list201812w1.json', True, '20181204'))
     # print(get_poem_with_key('长安秋望'))
     # print(set_checkin('checkin1.json', 2018, 7, 17, 30))
     '''

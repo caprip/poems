@@ -116,6 +116,15 @@ def set_checkin(filepath, datestart=''):
     return result
 
 
+def is_it_in(poem_uuid):
+    result = False
+    conn = sqlite3.connect(DATABASE_FILE)
+    if len(conn.execute('SELECT * FROM poems WHERE poem_uuid="{}"'.format(poem_uuid)).fetchall()) > 0:
+        result = True
+    conn.close()
+    return result
+
+
 def get_save_and_set(filepath, ischeck=False, datestart=''):
     if datestart == '':
         datestart = datetime.date.today().strftime('%Y%m%d')
@@ -125,7 +134,8 @@ def get_save_and_set(filepath, ischeck=False, datestart=''):
     for each in keys:
         print(each)
         poem = get_poem_with_key(each)
-        tablepoems.append(poem)
+        if not is_it_in(poem[0]):
+            tablepoems.append(poem)
         tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
                               datetime.timedelta(keys.index(each))).strftime('%Y%m%d'), poem[0]))
     print(tablepoems)
@@ -145,7 +155,7 @@ def get_save_and_set(filepath, ischeck=False, datestart=''):
 if __name__ == '__main__':
     print('This is get_poems.py!\n')
     # print(get_save_and_set('list20181202b1.json'))
-    print(get_save_and_set('list201812w1.json', True, '20181204'))
+    print(get_save_and_set('list201812w4.json', True, '20181224'))
     # print(get_poem_with_key('长安秋望'))
     # print(set_checkin('checkin1.json', 2018, 7, 17, 30))
     '''

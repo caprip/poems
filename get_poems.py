@@ -40,10 +40,17 @@ def get_poem_with_pid(poem_uuid):
 
 def get_url_from_baidu(keyword):
     URL_baidu = 'http://www.baidu.com/s'
-    payload = {'wd': keyword}
+    SIGN_baiduwenku = 'https://hanyu.baidu.com/shici/detail'
+    payload = {'wd': keyword + ' site:hanyu.baidu.com'}
     res_baidu = requests.get(URL_baidu, params=payload)
     soup = BeautifulSoup(res_baidu.text, 'html5lib')
-    return soup(class_='result c-container ')[0].h3.a['href']
+    result = []
+    for i in range(10):
+        url_temp = soup(class_='result c-container ')[i].h3.a['href']
+        res_temp = requests.get(url_temp)
+        if SIGN_baiduwenku in res_temp.url:
+            result.append(url_temp)
+    return result[0]
     '''
     TAG_start = '"url":"http'
     TAG_end = '}'
@@ -68,7 +75,7 @@ def get_poem_with_key(keyword):
         uuid.UUID(keyword)
         poem = get_poem_with_pid(keyword)
     except:
-        url_poem = get_url_from_baidu(keyword + ' 百度汉语')
+        url_poem = get_url_from_baidu(keyword)
         poem = get_poem_from_url(url_poem)
     return poem
 
@@ -155,8 +162,8 @@ def get_save_and_set(filepath, ischeck=False, datestart=''):
 if __name__ == '__main__':
     print('This is get_poems.py!\n')
     # print(get_save_and_set('list20181202b1.json'))
-    print(get_save_and_set('list201812w5.json', True, '20181231'))
-    # print(get_poem_with_key('长安秋望'))
+    # print(get_save_and_set('list201812w5.json', True, '20181231'))
+    # print(get_poem_with_key('秋浦歌十七首'))
     # print(set_checkin('checkin1.json', 2018, 7, 17, 30))
     '''
     sql_result = list_all_poems()

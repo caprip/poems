@@ -51,11 +51,10 @@ def get_url_from_baidu(keyword):
         if SIGN_baiduwenku in res_temp.url:
             result.append(url_temp)
     return result[0]
-    '''
-    TAG_start = '"url":"http'
-    TAG_end = '}'
-    t = res_baidu.text
-    return t[t.find(TAG_start) + 7:t.find(TAG_end, t.find(TAG_start)) - 1]'''
+    # TAG_start = '"url":"http'
+    # TAG_end = '}'
+    # t = res_baidu.text
+    # return t[t.find(TAG_start) + 7:t.find(TAG_end, t.find(TAG_start)) - 1]
 
 
 def get_poem_from_url(url_poem):
@@ -165,21 +164,21 @@ if __name__ == '__main__':
     # print(get_save_and_set('list201812w5.json', True, '20181231'))
     # print(get_poem_with_key('秋浦歌十七首'))
     # print(set_checkin('checkin1.json', 2018, 7, 17, 30))
-    '''
-    sql_result = list_all_poems()
-    all_uuids = []
-    for each in sql_result:
-        all_uuids.append(each[0])
-    # with open('checkin1.json', 'w') as fp:
-        # json.dump(all_uuids, fp, indent=4)
-    print(all_uuids)'''
+
+    # sql_result = list_all_poems()
+    # all_uuids = []
+    # for each in sql_result:
+    #     all_uuids.append(each[0])
+    # # with open('checkin1.json', 'w') as fp:
+    #     # json.dump(all_uuids, fp, indent=4)
+    # print(all_uuids)
+
     # get_poem_with_pid('ba9e4875904f4e8887d691f6a753d5f4')
     # get_poem_with_pid('35146e25078b4a3585179d31caa2bc29')
     # print(get_poem_with_key('a20ccf16278df7ec4df2f965624423b1'))
     # print(get_poem_with_key('山居秋暝 百度汉语'))
-    '''
-    with open('poemlist1.txt') as fp:
-        for eachline in fp.readlines():
-            poem = get_poem_with_key(eachline)
-            save_poem(poem)
-    '''
+
+    # with open('poemlist1.txt') as fp:
+    #     for eachline in fp.readlines():
+    #         poem = get_poem_with_key(eachline)
+    #         save_poem(poem)

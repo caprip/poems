@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Date    : 2018-07-22 17:18:23
 # @Author  : PinG (y.p@qq.com)
@@ -8,10 +8,12 @@
 import datetime
 import json
 import random
-from gevent import monkey
-monkey.patch_all()
-from bottle import route, run
 import sqlite3
+
+from bottle import route, run
+from gevent import monkey
+
+monkey.patch_all()
 
 DATABASE_FILE = 'poems.db'
 HOST_NAME = 'poems.caprip.win'
@@ -145,4 +147,4 @@ def http_recite(checkinday=''):
 
 
 run(host='0.0.0.0', port=80, server='gevent')
-#run(host=HOST_NAME, port=80, server='gevent')
+# run(host=HOST_NAME, port=80, server='gevent')

@@ -1,4 +1,4 @@
 beautifulsoup4==4.6.3
-bottle==0.12.13
+bottle==0.12.16
 html5lib==1.0.1
 requests==2.20.0

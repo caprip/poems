@@ -146,12 +146,12 @@ def get_save_and_set(filepath, ischeck=False, datestart=''):
         tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
                               datetime.timedelta(keys.index(each))).strftime('%Y%m%d'), poem[0]))
     print(tablepoems)
-    print(tablecheckin)
     conn = sqlite3.connect(DATABASE_FILE)
     result = []
     result.append(conn.executemany(
         'INSERT INTO poems VALUES (?,?,?,?,?)', tablepoems))
     if ischeck:
+        print(tablecheckin)
         result.append(conn.executemany(
             'INSERT INTO checkin VALUES (?,?)', tablecheckin))
     conn.commit()
@@ -161,7 +161,7 @@ def get_save_and_set(filepath, ischeck=False, datestart=''):
 
 if __name__ == '__main__':
     print('This is get_poems.py!\n')
-    # print(get_save_and_set('list20181202b1.json'))
+    print(get_save_and_set('case20181229.json'))
     # print(get_save_and_set('list201812w5.json', True, '20181231'))
     # print(get_poem_with_key('秋浦歌十七首'))
     # print(set_checkin('checkin1.json', 2018, 7, 17, 30))

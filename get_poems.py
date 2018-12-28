@@ -9,6 +9,7 @@ import datetime
 import json
 import sqlite3
 import uuid
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -40,7 +41,7 @@ def get_poem_with_pid(poem_uuid):
 
 def get_url_from_baidu(keyword):
     URL_baidu = 'http://www.baidu.com/s'
-    SIGN_baiduwenku = 'https://hanyu.baidu.com/shici/detail'
+    SIGN_baiduhanyu = 'https://hanyu.baidu.com/shici/detail'
     payload = {'wd': keyword + ' site:hanyu.baidu.com'}
     res_baidu = requests.get(URL_baidu, params=payload)
     soup = BeautifulSoup(res_baidu.text, 'html5lib')
@@ -48,9 +49,10 @@ def get_url_from_baidu(keyword):
     for i in range(10):
         url_temp = soup(class_='result c-container ')[i].h3.a['href']
         res_temp = requests.get(url_temp)
-        if SIGN_baiduwenku in res_temp.url:
+        if SIGN_baiduhanyu in res_temp.url:
             result.append(url_temp)
     return result[0]
+    # To get first url without beautifulsoup
     # TAG_start = '"url":"http'
     # TAG_end = '}'
     # t = res_baidu.text
@@ -58,10 +60,10 @@ def get_url_from_baidu(keyword):
 
 
 def get_poem_from_url(url_poem):
-    SIGN_baiduwenku = 'https://hanyu.baidu.com/shici/detail'
+    SIGN_baiduhanyu = 'https://hanyu.baidu.com/shici/detail'
     res_poem = requests.get(url_poem)
     res_poem.encoding = 'utf-8'
-    if SIGN_baiduwenku in res_poem.url:
+    if SIGN_baiduhanyu in res_poem.url:
         poem_uuid = res_poem.url[41:73]
         details = get_details(res_poem.text)
         return (poem_uuid,) + details

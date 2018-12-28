@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Date    : 2018-07-18 18:18:18
 # @Author  : PinG (y.p@qq.com)
@@ -13,8 +13,7 @@ import uuid
 import requests
 from bs4 import BeautifulSoup
 
-DATABASE_FILE = 'poems.db'
-
+DATABASE_POEMS = 'poems.db'
 
 def get_details(res_text):
     soup = BeautifulSoup(res_text, 'html5lib')
@@ -82,14 +81,14 @@ def get_poem_with_key(keyword):
 
 
 def save_poem(poem):
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     conn.execute('INSERT INTO poems VALUES (?,?,?,?,?)', poem)
     conn.commit()
     conn.close()
 
 
 def list_all_poems(columns='*'):
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     result = conn.execute('SELECT {} FROM poems'.format(columns)).fetchall()
     conn.close()
     return result
@@ -117,7 +116,7 @@ def set_checkin(filepath, datestart=''):
     for each in uuids:
         tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
                               datetime.timedelta(uuids.index(each))).strftime('%Y%m%d'), each))
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     result = conn.executemany('INSERT INTO checkin VALUES (?,?)', tablecheckin)
     conn.commit()
     conn.close()
@@ -126,7 +125,7 @@ def set_checkin(filepath, datestart=''):
 
 def is_it_in(poem_uuid):
     result = False
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     if len(conn.execute('SELECT * FROM poems WHERE poem_uuid="{}"'.format(poem_uuid)).fetchall()) > 0:
         result = True
     conn.close()
@@ -147,7 +146,7 @@ def get_save_and_set(filepath, ischeck=False, datestart=''):
         tablecheckin.append(((datetime.datetime.strptime(datestart, '%Y%m%d') +
                               datetime.timedelta(keys.index(each))).strftime('%Y%m%d'), poem[0]))
     print(tablepoems)
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     result = []
     result.append(conn.executemany(
         'INSERT INTO poems VALUES (?,?,?,?,?)', tablepoems))

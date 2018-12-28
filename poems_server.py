@@ -15,8 +15,11 @@ from gevent import monkey
 
 monkey.patch_all()
 
-DATABASE_FILE = 'poems.db'
+DATABASE_POEMS = 'poems.db'
+DATABASE_CHECKIN = 'checkin.db'
+
 HOST_NAME = 'poems.caprip.win'
+
 URL_poem_mp3 = 'http://app.dict.baidu.com/static/shici_mp3/{}.mp3'
 
 
@@ -34,14 +37,14 @@ def get_poem_from_db(uuid='', author='', title=''):
         params += ' poem_title="{}"'.format(title)
     if params == 'WHERE':
         params = ''
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     result = conn.execute('SELECT * FROM poems {}'.format(params)).fetchall()
     conn.close()
     return result[0]
 
 
 def get_random_poem_from_db():
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     result = conn.execute('SELECT * FROM poems').fetchall()
     conn.close()
     return random.choice(result)
@@ -85,7 +88,7 @@ def create_html_recite(poem):
 
 
 def get_checkin_uuid(checkinday):
-    conn = sqlite3.connect(DATABASE_FILE)
+    conn = sqlite3.connect(DATABASE_POEMS)
     checkin_uuid = conn.execute(
         'SELECT checkin_uuid FROM checkin WHERE checkin_day=(?)', (checkinday,)).fetchall()
     conn.close()

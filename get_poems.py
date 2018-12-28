@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 
 DATABASE_POEMS = 'poems.db'
 
+
 def get_details(res_text):
     soup = BeautifulSoup(res_text, 'html5lib')
     poem_title = soup.h1.text

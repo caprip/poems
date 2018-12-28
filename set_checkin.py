@@ -14,6 +14,8 @@ import requests
 import xlrd
 from bs4 import BeautifulSoup
 
+from poem import poem
+
 DATABASE_CHECKIN = 'checkin.db'
 TABLE_CHECKINLIST = 'checkinlist'
 XLSX_FILE = 'sczl.xlsx'

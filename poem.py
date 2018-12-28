@@ -5,15 +5,17 @@
 # @Link    : http://zhangyunping.cn
 # @Version : $Id$
 
-import uuid
 import json
+import sqlite3
+import uuid
+
 import requests
 from bs4 import BeautifulSoup
 
 URL_baidu = 'http://www.baidu.com/s'
 URL_baiduhanyu = 'https://hanyu.baidu.com/shici/detail'
 KEY_site = ' site:hanyu.baidu.com'
-
+DB_poems = 'poems.db'
 
 class poem:
     def __init__(self, keyword):

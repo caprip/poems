@@ -21,6 +21,11 @@ KEY_site = ' site:hanyu.baidu.com'
 
 class poem:
     def __init__(self, keyword):
+        self.__uuid = ''
+        self.__title = ''
+        self.__author = ''
+        self.__dynasty = ''
+        self.__content = ''
         self.__keyword = keyword
         if not self.__get_poem_db():
             self.__get_poem_web()
@@ -29,11 +34,11 @@ class poem:
         temp = poemdao().find_poem(self.__keyword)
         result = len(temp) > 0
         if result:
-            self.__uuid,
-            self.__title,
-            self.__author,
-            self.__dynasty,
-            self.__content = temp[0]
+            self.__uuid = temp[0][0]
+            self.__title = temp[0][1]
+            self.__author = temp[0][2]
+            self.__dynasty = temp[0][3]
+            self.__content = temp[0][4]
         return result
 
     def __get_poem_web(self):
@@ -117,3 +122,7 @@ class poem:
         ]
         if not poemdao().is_uuid_exist(self.__uuid):
             return poemdao().save_poem(poem)
+
+    def get_uuid_db(self):
+        self.saveindb()
+        return self.uuid()

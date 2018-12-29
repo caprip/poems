@@ -59,7 +59,7 @@ class checkindao(dao):
 
     def save_checkinlist(self, checkinlist):
         structure = CHECKIN_structure.copy()
-        structure['table'] = checkinlist['table']
+        structure['tablename'] = checkinlist['table']
         replacelist = {
             'table': CHECKINLIST_structure['tablename'],
             'values': [

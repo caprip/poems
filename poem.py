@@ -12,20 +12,35 @@ import uuid
 import requests
 from bs4 import BeautifulSoup
 
+from poemdao import poemdao
+
 URL_baidu = 'http://www.baidu.com/s'
 URL_baiduhanyu = 'https://hanyu.baidu.com/shici/detail'
 KEY_site = ' site:hanyu.baidu.com'
-DB_poems = 'poems.db'
+
 
 class poem:
     def __init__(self, keyword):
         self.__keyword = keyword
+        if not self.__get_poem_db():
+            self.__get_poem_web()
+
+    def __get_poem_db(self):
+        temp = poemdao().find_poem(self.__keyword)
+        result = len(temp) > 0
+        if result:
+            self.__uuid,
+            self.__title,
+            self.__author,
+            self.__dynasty,
+            self.__content = temp[0]
+        return result
+
+    def __get_poem_web(self):
         try:
             uuid.UUID(self.__keyword)
-            # self.__keystyle = 'uuid'
             self.__uuid = keyword
         except:
-            # self.__keystyle = 'text'
             self.__get_uuid_with_keyword()
         self.__get_poem_with_uuid()
 
@@ -39,7 +54,7 @@ class poem:
             url_temp = soup(class_='result c-container ')[k].h3.a['href']
             res_temp = requests.get(url_temp)
             if URL_baiduhanyu in res_temp.url:
-                result.append(url_temp)
+                result.append(res_temp.url)
             k += 1
         self.__uuid = result[0][41:73]
 
@@ -91,3 +106,14 @@ class poem:
             self.__dynasty,
             self.__content
         ]
+
+    def saveindb(self):
+        poem = [
+            self.__uuid,
+            self.__title,
+            self.__author,
+            self.__dynasty,
+            self.__content
+        ]
+        if not poemdao().is_uuid_exist(self.__uuid):
+            return poemdao().save_poem(poem)

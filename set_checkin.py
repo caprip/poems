@@ -73,9 +73,20 @@ def create_checkinlist(checkinlist_name, checkinlist_days=0):
     return result
 
 
-def get_checkin_from_xlsx(filepath):
+def get_checkinlist_from_xlsx(filepath):
     xlsfile = xlrd.open_workbook(filepath)
-    for eachsheet in xlsfile.sheets():
-        if not is_checkinlist_exist(eachsheet.name):
-            create_checkinlist(eachsheet.name, eachsheet.nrows)
-    return
+    sheetmenu = xlsfile.sheet_by_name('诗词之旅201812')
+    for each in range(sheetmenu.nrows):
+        print(sheetmenu.row_values(each))
+    # for each in sheetmenu.get_rows():
+    #     print(each)
+    # print(sheetmenu.cell(0,0).value)
+    # for eachsheet in xlsfile.sheets():
+    #     if not is_checkinlist_exist(eachsheet.name):
+    #         create_checkinlist(eachsheet.name, eachsheet.nrows)
+    # return
+
+
+if __name__ == '__main__':
+    print('This is set_checkin.py!\n')
+    get_checkinlist_from_xlsx(XLSX_FILE)

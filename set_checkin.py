@@ -14,7 +14,7 @@ FILE_xlsx = 'sczl.xlsx'
 SHEET_menu = 'CheckinList'
 
 
-def get_checkinlist_from_xlsx(filepath):
+def set_checkinlist_from_xlsx(filepath):
     workbook = xlrd.open_workbook(filepath)
     sheetmenu = workbook.sheet_by_name(SHEET_menu)
     checkins = []
@@ -34,9 +34,10 @@ def get_checkinlist_from_xlsx(filepath):
         checkins.append(checkin)
     for each in checkins:
         checkindao().save_checkinlist(each)
-        print(each)
+        # print(each)
 
 
 if __name__ == '__main__':
     print('This is set_checkin.py!\n')
-    get_checkinlist_from_xlsx(FILE_xlsx)
+    set_checkinlist_from_xlsx(FILE_xlsx)
+    print('Done.\n')

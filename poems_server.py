@@ -13,6 +13,9 @@ import sqlite3
 from bottle import route, run
 from gevent import monkey
 
+from checkindao import checkindao
+from poem import poem
+
 monkey.patch_all()
 
 DATABASE_POEMS = 'poems.db'
@@ -128,6 +131,10 @@ def http_checkin(checkinday=''):
     else:
         return '打卡日期数据错误。'
 
+@route('/checkin/<checkinlist>/<checkindate>')
+def http_checkin(checkinlist,checkindate):
+    pass
+    
 
 @route('/recite')
 @route('/recite/')

@@ -132,7 +132,8 @@ def http_checkin(checkinday=''):
         return '打卡日期数据错误。'
 
 @route('/checkin/<checkinlist>/<checkindate>')
-def http_checkin2(checkinlist,checkindate):
+@route('/qiandao/<checkinlist>/<checkindate>')
+def http_qiandao(checkinlist,checkindate):
     pass
     
 

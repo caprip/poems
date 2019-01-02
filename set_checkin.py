@@ -7,8 +7,7 @@
 
 import xlrd
 
-from checkindao import checkindao
-from poem import poem
+from poemapi import checkindao, poem
 
 FILE_xlsx = 'sczl.xlsx'
 SHEET_menu = 'CheckinList'

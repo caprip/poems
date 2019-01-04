@@ -54,14 +54,16 @@ class dao():
         return result
 
     def select_values(self, selectdict):
-        sqlbase = 'SELECT * FROM {} WHERE {}'
+        sqlbase = 'SELECT * FROM {}'
         keys = []
         for each in selectdict['keys']:
             if each[2].upper() == 'LIKE':
                 keys.append('{} {} "%{}%"'.format(each[0], each[2], each[1]))
             else:
                 keys.append('{} {} "{}"'.format(each[0], each[2], each[1]))
-        sql = sqlbase.format(selectdict['table'], ' and '.join(keys))
+        sql = sqlbase.format(selectdict['table'])
+        if len(keys) > 0:
+            sql += ' WHERE ' + ' and '.join(keys)
         conn = sqlite3.connect(self.__database)
         result = conn.execute(sql).fetchall()
         conn.close()

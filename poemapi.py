@@ -243,6 +243,13 @@ class checkindao(dao):
         }
         return self.select_values(select)[0][1]
 
+    def get_checkin_list(self, table):
+        select = {
+            'table': table,
+            'keys': []
+        }
+        return self.select_values(select)
+
     def find_checkin(self, table, checkindate):
         select = {
             'table': table,
@@ -268,13 +275,32 @@ class checkindao(dao):
 
 class checkin(checkindao):
     def __init__(self, checkinlist=''):
-        pass
+        checkindao.__init__(self)
+        self.__checkin = checkinlist
+        self.__isexist = False
+        self.__list = []
+        self.__checkinname = ''
+        self.__get_checkin_db()
+
+    def __is_exist(self):
+        if self.__checkin != '':
+            self.__isexist = self.is_checkinlist_exist(self.__checkin)
+        return self.__isexist
 
     def __get_checkin_db(self):
-        pass
+        if self.__is_exist():
+            self.__checkinname = self.get_checkin_name(self.__checkin)
+            self.__list = self.get_checkin_list(self.__checkin)
+        return len(self.__list)
 
     def __set_checkin(self, checkindict):
         pass
 
-    def getuuid(self, checkindate):
-        pass
+    def get_uuid(self, checkindate):
+        result = []
+        if self.__isexist:
+            result = self.find_checkin(self.__checkin, checkindate)
+        return result
+
+    def get_all(self):
+        return self.__list

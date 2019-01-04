@@ -13,7 +13,7 @@ import sqlite3
 from bottle import route, run
 from gevent import monkey
 
-from poemapi import checkindao, poem
+from poemapi import checkin, poem
 
 monkey.patch_all()
 
@@ -131,10 +131,15 @@ def http_checkin(checkinday=''):
         return '打卡日期数据错误。'
 
 
-@route('/checkin/<checkinlist>/<checkindate>')
+# @route('/checkin/<checkinlist>/<checkindate>')
 @route('/qiandao/<checkinlist>/<checkindate>')
 def http_qiandao(checkinlist, checkindate):
-    pass
+    checkinuuid = checkin(checkinlist).get_uuid(checkindate)
+    if len(checkinuuid) == 1:
+        poem = get_poem_from_db(uuid=checkinuuid[0][1])
+        return create_html_poem(poem)
+    else:
+        return '签到信息错误。'
 
 
 @route('/recite')

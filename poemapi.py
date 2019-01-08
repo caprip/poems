@@ -304,3 +304,13 @@ class checkin(checkindao):
 
     def get_all(self):
         return self.__list
+
+    def set_one(self, checkindate, uuid, checkininfo=''):
+        sqlist = {
+            'table': self.__checkin,
+            'name': self.__checkinname,
+            'values': [
+                [checkindate, uuid, checkininfo]
+            ]
+        }
+        self.save_checkinlist(sqlist)

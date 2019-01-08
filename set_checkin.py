@@ -7,7 +7,7 @@
 
 import xlrd
 
-from poemapi import checkindao, poem
+from poemapi import checkindao, checkin, poem
 
 FILE_xlsx = 'sczl.xlsx'
 SHEET_menu = 'CheckinList'
@@ -38,5 +38,8 @@ def set_checkinlist_from_xlsx(filepath):
 
 if __name__ == '__main__':
     print('This is set_checkin.py!\n')
-    set_checkinlist_from_xlsx(FILE_xlsx)
+    # set_checkinlist_from_xlsx(FILE_xlsx)
+    c=checkin('zmsczl')
+    p=poem('秋浦歌其十四')
+    c.set_one('20190109',p.get_uuid_db(),'040 李白《秋浦歌》赏析.mp4')
     print('Done.\n')

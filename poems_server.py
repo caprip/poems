@@ -142,6 +142,7 @@ def http_checkin(checkinday='today'):
 
 
 # @route('/checkin/<checkinlist>/<checkindate>')
+@route('/qiandao/<checkinlist>/')
 @route('/qiandao/<checkinlist>/<checkindate>')
 def http_qiandao(checkinlist, checkindate='today'):
     checkindate = trans_date(checkindate)

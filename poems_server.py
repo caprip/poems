@@ -52,10 +52,11 @@ def get_random_poem_from_db():
     return random.choice(result)
 
 
-def text_date(delta):
+def text_date(delta):  # 将日期转换成YYYYMMDD,供trans_date()调用
     return (datetime.date.today() + datetime.timedelta(delta)).strftime('%Y%m%d')
 
 
+# case字典常数，供trans_date()使用
 CASE_transdate = {
     'today': 0,
     'yesterday': -1,
@@ -63,7 +64,7 @@ CASE_transdate = {
 }
 
 
-def trans_date(checkindate):
+def trans_date(checkindate):  # 签到日期参数语意转换:将today,yesterday,tomorrow转换成YYYYMMDD格式
     checkindate = checkindate.lower()
     return text_date(CASE_transdate[checkindate]) if checkindate in CASE_transdate else checkindate
 

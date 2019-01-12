@@ -52,6 +52,22 @@ def get_random_poem_from_db():
     return random.choice(result)
 
 
+def text_date(delta):
+    return (datetime.date.today() + datetime.timedelta(delta)).strftime('%Y%m%d')
+
+
+CASE_transdate = {
+    'today': 0,
+    'yesterday': -1,
+    'tomorrow': 1
+}
+
+
+def trans_date(checkindate):
+    checkindate = checkindate.lower()
+    return text_date(CASE_transdate[checkindate]) if checkindate in CASE_transdate else checkindate
+
+
 def create_html_poem(poem):
     html = '<title>{}-{}</title>'.format(poem[1], poem[2])
     html += '<body align="center" style="line-height:66%">'
@@ -114,15 +130,8 @@ def http_random():
 @route('/checkin/')
 @route('/checkin/<checkinday>')
 @route('/checkin/<checkinday>/')
-def http_checkin(checkinday=''):
-    if checkinday == '' or checkinday.lower() == 'today':
-        checkinday = datetime.date.today().strftime('%Y%m%d')
-    elif checkinday.lower() == 'tomorrow':
-        checkinday = (datetime.date.today() +
-                      datetime.timedelta(1)).strftime('%Y%m%d')
-    elif checkinday.lower() == 'yesterday':
-        checkinday = (datetime.date.today() -
-                      datetime.timedelta(1)).strftime('%Y%m%d')
+def http_checkin(checkinday='today'):
+    checkinday = trans_date(checkinday)
     checkinuuid = get_checkin_uuid(checkinday)
     if len(checkinuuid) == 1:
         poem = get_poem_from_db(uuid=checkinuuid[0][0])
@@ -134,6 +143,7 @@ def http_checkin(checkinday=''):
 # @route('/checkin/<checkinlist>/<checkindate>')
 @route('/qiandao/<checkinlist>/<checkindate>')
 def http_qiandao(checkinlist, checkindate):
+    checkindate = trans_date(checkindate)
     checkinuuid = checkin(checkinlist).get_uuid(checkindate)
     if len(checkinuuid) == 1:
         poem = get_poem_from_db(uuid=checkinuuid[0][1])

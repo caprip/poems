@@ -2,3 +2,4 @@ beautifulsoup4
 bottle
 html5lib
 requests
+gevent
